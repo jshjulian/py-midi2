@@ -1,4 +1,4 @@
-# What is MIDI-CI?
+# MIDI-CI Inquiry and Response?
 
 Let's say you have a **MIDI 2.0 Capable Device**, meaning the device communicates using Universal MIDI Packets (UMPs) and has MIDI Capability Inquiry (MIDI-CI) which allows MIDI devices to communicate with each other bidirectionally which gives the devices access to extended MIDI capabilities. What are these extended capabilities? What does MIDI-CI allow us to do?
 
