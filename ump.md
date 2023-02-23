@@ -8,6 +8,8 @@ MIDI 1.0 messages are generally sent using one status byte followed by one or tw
 
 A MIDI message such as Note On would have a status where the first four bits are 1001 and the last four represent the channel number (1-16) the message is sent over. The two data bytes represent the MIDI note number and the velocity of the note. And remember we only have 7bits (or 127 values) for the data.
 
+A MIDI message such as Channel Pressure would have a status byte where the first four bits are 1101 and the last four represent the channel number. The channel pressure message only has one byte of data which represents the pressure to be send across the entire channel.
+
 # Universal MIDI Packets in MIDI 2.0
 
 In MIDI 2.0, UMPs are one, two, three, or four 32-bit long words. Each UMP has fields for Message Type, Group, and Status. 
