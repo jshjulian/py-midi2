@@ -9,3 +9,7 @@ Another limiation of MIDI comes from the data format. Most MIDI messages are sen
 With the 128 different values for pitch, MIDI was built for the 12-tone equal temperament scale which makes MIDI a difficult format to use for other scales or microtonal music.
 
 In general, MIDI was built for keyboard like controllers and is difficult to implement on wind instruments, guitars, and other instruments (some of this is made easier with MPE).
+
+MIDI 1.0 is unidirectional, meaning devices are either senders or receivers which makes tasks such as sharing presets or banks between devices difficult.
+
+In some sense the broadness of the specification lends different implementations of parts of MIDI. An example is Lippold Haken's MPE+ blog post which details problems with MPE and the need for MPE+ due to side effects of the lack of specificity in the MPE specification
