@@ -8,7 +8,7 @@ Profiles can be supported by devices using both MIDI 1.0, MIDI 2.0, and any othe
 
 # What can a Profile do?
 
-A Profile is defined in a Profile specification document which defines the receiver device's implementation of specific MIDI messages. For example, this could be a response to Note On/Off messages, CC Messages, RPN messages, any MIDI message. Within the specification document, there may be implementation requirements for the receiver such as Minimum Polyphony required, number of MIDI channels supported, other Non-MIDI data types supported, etc.
+The Profile specification document defines a receiver device's implementation of specific MIDI messages. For example, this could be a response to Note On/Off messages, CC Messages, RPN messages, any MIDI message. Within the specification document, there may be implementation requirements for the receiver such as Minimum Polyphony required, number of MIDI channels supported, other Non-MIDI data types supported, etc.
 
 Note that CC Messages should not gain new definitions and RPN messages should control parameters not previously defined. For example, General MIDI 2 defines Reverb Level on CC#91 and it would be beneficial for a Profile that contains controls for reverb to use the same CC.
 
