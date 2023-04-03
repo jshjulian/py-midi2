@@ -1,8 +1,0 @@
-setup.py
-coremidi/__init__.py
-coremidi/_simplecoremidi.c
-coremidi/core.py
-simplecoremidi.egg-info/PKG-INFO
-simplecoremidi.egg-info/SOURCES.txt
-simplecoremidi.egg-info/dependency_links.txt
-simplecoremidi.egg-info/top_level.txt

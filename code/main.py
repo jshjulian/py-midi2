@@ -12,6 +12,10 @@ while True:
   elif answer == "2":
     dst = MIDIDestination("python midi note receiver")
     break
+  else:
+     src = MIDISource("python midi note sender") 
+     dst = MIDIDestination("python midi note receiver")
+     break
   
 def is_integer(n):
     try:
@@ -84,8 +88,8 @@ while True:
   if note == "q":
     break
   elif is_integer(note):
-    x = m.midi2_0_note_on(note, 2**14)
-    y = m.midi2_0_pitch_bend(2**5)
+    x = m.midi2_0_note_on(note, 2**15)
+    y = m.midi2_0_pitch_bend(2**16)
     y2 = m.midi2_0_pitch_bend(2**16//2)
     src.send(y2.list_of_words())
     z = m.midi2_0_note_off(note, 0)
