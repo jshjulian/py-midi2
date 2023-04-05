@@ -35,7 +35,7 @@ CMRecvMIDIProc(const MIDIPacketList* pktList,
                 void* readProcRefCon,
                 void* srcConnRefCon) {
   CMMIDIDestinationRef destRef = (CMMIDIDestinationRef) readProcRefCon;
-  int i;
+  uint i;
   const MIDIPacket* pkt;
 
   pkt = &pktList->packet[0];
@@ -95,7 +95,7 @@ static PyObject*
 CMSendMidi(PyObject* self, PyObject* args) {
   MIDIEndpointRef midiSource;
   PyObject* midiData;
-  Py_ssize_t nWords;
+  Py_ssize_t numWords;
   MIDIEventList eventList;
   MIDIEventPacket* pkt;
   UInt32 midiDataToSend[4];
@@ -104,9 +104,9 @@ CMSendMidi(PyObject* self, PyObject* args) {
 
   midiSource = (MIDIEndpointRef) PyCapsule_GetPointer(PyTuple_GetItem(args, 0), NULL);
   midiData = PyTuple_GetItem(args, 1);
-  nWords = PySequence_Size(midiData);
+  numWords = PySequence_Size(midiData);
 
-  for (i = 0; i < nWords; i++) {
+  for (i = 0; i < numWords; i++) {
     PyObject* midiWord;
 
     midiWord = PySequence_GetItem(midiData, i);
@@ -119,7 +119,7 @@ CMSendMidi(PyObject* self, PyObject* args) {
                           sizeof(eventList),
                           pkt,
                           (MIDITimeStamp)now,
-                          nWords,
+                          numWords,
                           midiDataToSend);
 
   if (pkt == NULL || MIDIReceivedEventList(midiSource, &eventList)) {

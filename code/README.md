@@ -1,7 +1,12 @@
 
+Run 
 
-python setup.py bdist_wheel
+`python setup.py bdist_wheel`
 
-pip install dist/simpelcoremidi-0.1-*.whl
+to build the CoreMIDI C Extension
 
-python main.py to test sending Notes to an Input or Output
+`python main.py`
+
+ to test sending Notes to an Input or Output
+
+ `ump.py` has the definitions for the UMP packets
