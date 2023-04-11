@@ -4,15 +4,15 @@ Since 1983, the Musicial Instrument Digital Interface (MIDI) protocol has enable
 
 - **Per Note Pitch Bend**
     
-    Addressed by MIDI Polyphonic Expression (MPE) in 2018, the original MIDI specification does not support single note pitch bend, only pitch bends across an entire channel. This was remedied with MPE by putting different notes on different channels allowing up to 16 note polyphony which enables multidimensional controllers to control multiple parameters of each note. This allows for standard implementations of non-keyboard controllers such as MIDI guitars.
+    Addressed by MIDI Polyphonic Expression (MPE) in 2018, the original MIDI specification does not support single note pitch bend, only pitch bends across an entire channel. This was remedied with MPE by putting different notes on different channels allowing up to 16 note polyphony which enables multidimensional controllers to control multiple parameters of each note. This allows for standard implementations of non-keyboard controllers such as MIDI guitars. [JUCE 2016]
 
 - **Keyboard Bias**
 
-    MIDI was created to emulate sending piano information over a cable. While this is and has been the largest use case of MIDI, music that relies on notes outside of the western 12-tone equal temperament standard, music on stringed instruments, and any music made for non keyboard instruments are not well represented in the MIDI format. While non-keyboard MIDI controllers have been created, they are generally difficult to implement.
+    MIDI was created to emulate sending piano information over a cable. While this is and has been the largest use case of MIDI, music that relies on notes outside of the western 12-tone equal temperament standard, music on stringed instruments, and any music made for non keyboard instruments are not well represented in the MIDI format. While non-keyboard MIDI controllers have been created, they are generally difficult to implement. [Kopf 2020]
 
 - **Controller Value Resolution**
 
-    MIDI messages are sent in one, two, or three bytes. In these bytes, general the second and/or third byte encode data information about the message. The most significant bit for these bytes are set to 1, so for sending controller values, MIDI allows 7 bits of information (128 different values). While this is enough for encoding note numbers in the 12-tone standard and works for encoding volume information, when trying to encode something like a filter sweep from 100Hz to 10kHz, 128 values is just not enough.
+    MIDI messages are sent in one, two, or three bytes. In these bytes, general the second and/or third byte encode data information about the message. The most significant bit for these bytes are set to 1, so for sending controller values, MIDI allows 7 bits of information (128 different values). While this is enough for encoding note numbers in the 12-tone standard and works for encoding volume information, when trying to encode something like a filter sweep from 100Hz to 10kHz, 128 values is just not enough. [Bye 2018]
 
 - **Unidirectional Communication**
 
