@@ -1,12 +1,27 @@
 from coremidi.core import *
 from ump import MIDIMessageCreator as m
+import random
 
 class MIDI2:
   def __init__(self, name="Python MIDI 2.0"):
     self.name = name
     self.src = MIDISource(name + " src")
     self.dst = MIDIDestination(name + " dst")
+    self.muid = random.getrandbits(32)
+    self.muid_bytes = [
+      self.muid     & int("ff", 16), 
+      self.muid>>8  & int("ff", 16),
+      self.muid>>16 & int("ff", 16),
+      self.muid>>24 & int("ff", 16)
+    ]
 
+  def recv(self):
+    data = self.dst.recv()
+    new_data = []
+    for x in data:
+      new_data.append(hex(x))
+    return new_data
+  
   def note_on(self, note_num, vel, atr_type=0, atr_data=0, group=0, channel=0):
     msg = m.midi2_0_note_on(note_num, vel, atribute_type=atr_type, atribute_data=atr_data, group=group, channel=channel)
     self.src.send(msg())
@@ -59,7 +74,7 @@ class MIDI2:
 
   def rpnc_chorus(self, note_idx, data, group=0, channel=0):
     self.rpnc(note_idx, 93, group, channel)
-    
+
   def cc(self, num, data, group=0, channel=0):
     msg = m.midi2_0_cc(num, data, group, channel)
     self.src.send(msg())
@@ -144,3 +159,89 @@ class MIDI2:
 
   def cc_poly_mode(self, group=0):
     self.cc(127, 0, group)
+
+  def discovery_inquiry(self, group=0): 
+    data_list_1 = [
+      int("7e", 16),
+      int("7f", 16),
+      int("0d", 16),
+      int("70", 16),
+      int("01", 16),
+      self.muid_bytes[0],
+      self.muid_bytes[1],
+      self.muid_bytes[2],
+      self.muid_bytes[3],
+      int("7f", 16),
+      int("7f", 16),
+      int("7f", 16),
+      int("7f", 16)
+    ]
+    data_list_2 = [
+      int("7d", 16),
+      int("00", 16),
+      int("00", 16),
+      int("01", 16),
+      int("00", 16),
+      int("01", 16),
+      int("00", 16),
+      int("01", 16),
+      int("00", 16),
+      int("00", 16),
+      int("00", 16),
+      int("00001110", 2),
+    ]
+    data_list_3 = [
+      int("00", 16),
+      int("02", 16),
+      int("00", 16),
+      int("00", 16),
+    ]
+    msg = m.system_exclusive_8bit(1, 14, data_list_1)
+    self.src.send(msg())
+    msg = m.system_exclusive_8bit(2, 13, data_list_2)
+    self.src.send(msg())
+    msg = m.system_exclusive_8bit(3, 5, data_list_3)
+    self.src.send(msg())
+
+  def reply_to_discovery_inquiry(self, dest_bytes, group=0): 
+    data_list_1 = [
+      int("7e", 16),
+      int("7f", 16),
+      int("0d", 16),
+      int("71", 16),
+      int("01", 16),
+      self.muid_bytes[0],
+      self.muid_bytes[1],
+      self.muid_bytes[2],
+      self.muid_bytes[3],
+      int(dest_bytes[0], 16),
+      int(dest_bytes[1], 16),
+      int(dest_bytes[2], 16),
+      int(dest_bytes[3], 16)
+    ]
+    data_list_2 = [
+      int("7d", 16),
+      int("00", 16),
+      int("00", 16),
+      int("01", 16),
+      int("00", 16),
+      int("01", 16),
+      int("00", 16),
+      int("01", 16),
+      int("00", 16),
+      int("00", 16),
+      int("00", 16),
+      int("00001110", 2),
+    ]
+    data_list_3 = [
+      int("00", 16),
+      int("02", 16),
+      int("00", 16),
+      int("00", 16),
+    ]
+    msg = m.system_exclusive_8bit(1, 14, data_list_1, group=group)
+    self.src.send(msg())
+    msg = m.system_exclusive_8bit(2, 13, data_list_2, group=group)
+    self.src.send(msg())
+    msg = m.system_exclusive_8bit(3, 5, data_list_3, group=group)
+    self.src.send(msg())

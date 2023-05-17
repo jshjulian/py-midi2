@@ -52,8 +52,14 @@ class UniversalMIDIPacket:
         self.message_type = int(message_type)
         self.group = int(group)
         self.status = int(status) 
-        self.index = int(index)
-        self.data = int(data)
+        if index:
+          self.index = int(index)
+        else:
+          self.index = None
+        if data:
+          self.data = int(data)
+        else:
+          self.data = None
         self.packet = self.list_of_words()
 
     def packet_to_binary(self)->str:
@@ -587,3 +593,70 @@ class MIDIMessageCreator:
         status = int("0110", 2) << 4 | int(channel)
         index = int(note_num) << 8
         return UniversalMIDIPacket("MIDI 2.0 Per-Note Pitch Bend Message", 4, group, status=status, index=index, data=data)
+    
+    def system_exclusive_7bit(status:int, num_bytes:int, data_list:list, group:int=0):
+        """
+        System Exclusive (7 bit) Message
+
+        Parameters
+        ----------
+        status: int
+          Determines the role of the UMP in the System Exclusive Message
+          0: Complete System Exclusive Message in one UMP
+          1: System Exclusive Start UMP
+          2: System Exclusive Continue UMP
+          3: System Exclusive End UMP
+
+        num_bytes: int
+          Number of bytes through the end of the current UMP
+          (integer between 0 and 6)
+
+        data_list: list
+          List of data bytes (7bits per byte)
+
+        group: int, optional
+          Group (4bits), default: group 1
+        """
+        data = 0
+        shift = 0
+        for b in data_list:
+            data = int(b) << shift | data
+            shift += 8
+        data = data << (48-shift)
+        return UniversalMIDIPacket("System Exclusive (7-Bit) Message", 3, group, status<<4|num_bytes, data=data)
+    
+    def system_exclusive_8bit(status:int, num_bytes:int, data_list:list, stream_id:int=0, group:int=0):
+        """
+        System Exclusive 8 (8 bit) Message
+
+        Parameters
+        ----------
+        status: int
+          Determines the role of the UMP in the System Exclusive Message
+          0: Complete System Exclusive 8 Message in one UMP
+          1: System Exclusive 8 Start UMP
+          2: System Exclusive 8 Continue UMP
+          3: System Exclusive 8 End UMP
+
+        num_bytes: int
+          Number of bytes through the end of the current UMP
+          includes the stream_id byte
+          (integer between 1 and 14)
+
+        data_list: list
+          List of data bytes (8bits per byte)
+
+        stream_id: int, optional
+          if the device supports multiple simultaneous System Exclusive 8 messages
+          stream_id denotes the specific stream that this messages is sent and received by
+
+        group: int, optional
+          Group (4bits), default: group 1
+        """
+        data = 0
+        shift = 0
+        for b in data_list:
+            data = int(b) << shift | data
+            shift += 8
+        data = data << ((13*8)-shift)
+        return UniversalMIDIPacket("System Exclusive 8 (8-bit)", 5, group, status<<4|num_bytes, data=stream_id << 104 | data)
